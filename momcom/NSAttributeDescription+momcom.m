@@ -9,6 +9,8 @@
 #import "NSAttributeDescription+momcom.h"
 #import "NSPropertyDescription+momcom.h"
 
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "OCDFAInspection"
 static NSDictionary *attributeTypeForString;
 const NSString *const kUsesScalarAttributeType = @"mogenerator.usesScalarAttributeType";
 const NSString *const kAttributeValueClassName = @"attributeValueClassName";
@@ -243,3 +245,5 @@ const NSString *const kAttributeValueClassName = @"attributeValueClassName";
 }
 
 @end
+
+#pragma clang diagnostic pop

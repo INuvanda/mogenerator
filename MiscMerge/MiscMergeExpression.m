@@ -250,10 +250,10 @@ static NSNumber *FALSE_VALUE;
     if (leftOperand == nil && rightOperand == nil) {
         comparison = NSOrderedSame;
     }
-    else if (leftOperand == nil && rightOperand != nil) {
+    else if (leftOperand == nil) {
         comparison = NSOrderedAscending;
     }
-    else if (leftOperand != nil && rightOperand == nil) {
+    else if (rightOperand == nil) {
         comparison = NSOrderedDescending;
     }
     else if (MMIsObjectANumber(leftOperand) && MMIsObjectANumber(rightOperand)) {
@@ -330,8 +330,6 @@ static NSNumber *FALSE_VALUE;
         case MiscMergeOperatorGreaterThan:        return @">";
         default:                                  return @"";
     }
-
-    return operatorDescription;
 }
 
 @end
@@ -354,13 +352,7 @@ static NSNumber *FALSE_VALUE;
         id object;
 
         while ( !returnValue && (object = [enumerator nextObject]) ) {
-            if (leftOperand == nil && object == nil) {
-                returnValue = YES;
-            }
-            else if (leftOperand == nil && object != nil) {
-                returnValue = NO;
-            }
-            else if (leftOperand != nil && object == nil) {
+            if (leftOperand == nil) {
                 returnValue = NO;
             }
             else if (MMIsObjectANumber(leftOperand) && MMIsObjectANumber(object)) {
@@ -392,8 +384,6 @@ static NSNumber *FALSE_VALUE;
         case MiscMergeOperatorNotIn: return @"!=";
         default:                     return @"";
     }
-
-    return operatorDescription;
 }
 
 @end

@@ -135,10 +135,7 @@
         option->val = shortOption;
         if (argumentOptions == DDGetoptRequiredArgument || argumentOptions == DDGetoptKeyValueArgument)
             [mOptionString appendFormat: @"%c:", shortOption];
-        else if (argumentOptions == DDGetoptOptionalArgument)
-            [mOptionString appendFormat: @"%c::", shortOption];
-        else
-            [mOptionString appendFormat: @"%c", shortOption];
+        else [mOptionString appendFormat:@"%c", shortOption];
     }
     else
     {

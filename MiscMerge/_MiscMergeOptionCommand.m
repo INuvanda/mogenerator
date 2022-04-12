@@ -124,6 +124,8 @@ option nilLookupResult Nil* | KeyIfQuoted | Key | KeyWithDelims
 
 - (MiscMergeCommandExitType)executeForMerge:(MiscMergeEngine *)aMerger
 {
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "missing_default_case"
     switch (optionType) {
         case RecursiveLookups:
             if ( [value1 intValue] > 0 )
@@ -160,6 +162,7 @@ option nilLookupResult Nil* | KeyIfQuoted | Key | KeyWithDelims
             [aMerger setNilLookupResult:MiscMergeNilLookupResultKeyWithDelims];
             break;
     }
+#pragma clang diagnostic pop
 
     return MiscMergeCommandExitNormal;
 }

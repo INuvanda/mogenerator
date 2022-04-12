@@ -123,6 +123,8 @@ typedef enum _ArgTypes {
         argName = argumentArray[argumentIndex];
         argType = [argumentTypes[argumentIndex] intValue];
         
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "missing_default_case"
         switch ( argType ) {
             case RequiredArg:
             case OptionalArg:
@@ -144,6 +146,7 @@ typedef enum _ArgTypes {
             }
                 break;
         }
+#pragma clang diagnostic pop
     }
 
     argumentIndex += addToArgIndex;

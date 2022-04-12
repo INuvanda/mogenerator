@@ -279,7 +279,6 @@
         *prompt = NO;
         return [self getArgumentStringFromScanner:scanner toEnd:endFlag];
     }
-    return nil;
 }
 
 

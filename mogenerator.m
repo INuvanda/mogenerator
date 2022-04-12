@@ -28,15 +28,6 @@ static const NSString *const kIgnored = @"mogenerator.ignore";
 @implementation NSEntityDescription (fetchedPropertiesAdditions)
 - (NSDictionary*)fetchedPropertiesByName {
     NSMutableDictionary *fetchedPropertiesByName = [NSMutableDictionary dictionary];
-
-    NSArray *properties = [self properties];
-    for (NSPropertyDescription *property in properties)
-    {
-        if ([property isKindOfClass:[NSFetchedPropertyDescription class]]) {
-            fetchedPropertiesByName[[property name]] = property;
-        }
-    }
-
     return fetchedPropertiesByName;
 }
 @end
@@ -412,7 +403,10 @@ static const NSString *const kIgnored = @"mogenerator.ignore";
                 }
             } break;
             default:
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "OCSimplifyInspectionLegacy"
                 assert(0 && "unknown NSExpression type");
+#pragma clang diagnostic pop
         }
     }
 }
@@ -456,7 +450,6 @@ static const NSString *const kIgnored = @"mogenerator.ignore";
         case NSFloatAttributeType:
         case NSBooleanAttributeType:
             return YES;
-            break;
         default:
             return NO;
     }
@@ -488,22 +481,16 @@ static const NSString *const kIgnored = @"mogenerator.ignore";
         switch ([self attributeType]) {
             case NSInteger16AttributeType:
                 return gSwift ? isUnsigned ? @"UInt16" : @"Int16" : isUnsigned ? @"uint16_t" : @"int16_t";
-                break;
             case NSInteger32AttributeType:
                 return gSwift ? isUnsigned ? @"UInt32" : @"Int32" : isUnsigned ? @"uint32_t" : @"int32_t";
-                break;
             case NSInteger64AttributeType:
                 return gSwift ? isUnsigned ? @"UInt64" : @"Int64" : isUnsigned ? @"uint64_t" : @"int64_t";
-                break;
             case NSDoubleAttributeType:
                 return gSwift ? @"Double" : @"double";
-                break;
             case NSFloatAttributeType:
                 return gSwift ? @"Float" : @"float";
-                break;
             case NSBooleanAttributeType:
                 return gSwift ? @"Bool" : @"BOOL";
-                break;
             default:
                 return nil;
         }
@@ -519,28 +506,22 @@ static const NSString *const kIgnored = @"mogenerator.ignore";
                 return @"unsignedShortValue";
             }
             return @"shortValue";
-            break;
         case NSInteger32AttributeType:
             if (isUnsigned) {
                 return @"unsignedIntValue";
             }
             return @"intValue";
-            break;
         case NSInteger64AttributeType:
             if (isUnsigned) {
                 return @"unsignedLongLongValue";
             }
             return @"longLongValue";
-            break;
         case NSDoubleAttributeType:
             return @"doubleValue";
-            break;
         case NSFloatAttributeType:
             return @"floatValue";
-            break;
         case NSBooleanAttributeType:
             return @"boolValue";
-            break;
         default:
             return nil;
     }
@@ -555,28 +536,22 @@ static const NSString *const kIgnored = @"mogenerator.ignore";
                 return @"numberWithUnsignedShort:";
             }
             return @"numberWithShort:";
-            break;
         case NSInteger32AttributeType:
             if (isUnsigned) {
                 return @"numberWithUnsignedInt:";
             }
             return @"numberWithInt:";
-            break;
         case NSInteger64AttributeType:
             if (isUnsigned) {
                 return @"numberWithUnsignedLongLong:";
             }
             return @"numberWithLongLong:";
-            break;
         case NSDoubleAttributeType:
             return @"numberWithDouble:";
-            break;
         case NSFloatAttributeType:
             return @"numberWithFloat:";
-            break;
         case NSBooleanAttributeType:
             return @"numberWithBool:";
-            break;
         default:
             return nil;
     }
@@ -795,7 +770,6 @@ NSString *ApplicationSupportSubdirectoryName = @"mogenerator";
 
     ddprintf(@"templateDescNamed:@\"%@\": file not found", fileName_);
     exit(EXIT_FAILURE);
-    return nil;
 }
 
 - (void)application:(DDCliApplication*)app
@@ -968,7 +942,10 @@ NSString *ApplicationSupportSubdirectoryName = @"mogenerator";
 #pragma ide diagnostic ignored "OCSimplifyInspectionLegacy"
                 if (/* DISABLES CODE */ (NO) && [fm fileExistsAtPath:@"/usr/bin/xcrun"]) {
                     // Cool, we can just use Xcode 3.2.6/4.x's xcrun command to find and execute momc for us.
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "UnreachableCode"
                     momcTool = @"/usr/bin/xcrun momc";
+#pragma clang diagnostic pop
                 } else {
                     // Rats, don't have xcrun. Hunt around for momc in various places where various versions of Xcode stashed it.
                     NSString *xcodeSelectMomcPath = [NSString stringWithFormat:@"%@/usr/bin/momc", [self xcodeSelectPrintPath]];
