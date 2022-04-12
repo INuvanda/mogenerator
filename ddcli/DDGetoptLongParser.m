@@ -181,7 +181,10 @@
                     NSString *command = arguments[0];
                     arguments = [arguments subarrayWithRange:NSMakeRange(1, [arguments count] - 1)];
                     
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "NotReleasedValue"
                     NSMutableArray *mutableArguments = [@[command] mutableCopy];
+#pragma clang diagnostic pop
                     [mutableArguments addObjectsFromArray:argumentsFromFile];
                     [mutableArguments addObjectsFromArray:arguments];
                     arguments = [NSArray arrayWithArray:mutableArguments];
