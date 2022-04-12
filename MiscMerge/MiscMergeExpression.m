@@ -319,8 +319,6 @@ static NSNumber *FALSE_VALUE;
 
 - (NSString *)operatorDescription
 {
-    NSString *operatorDescription;
-    
     switch ( operator ) {
         case MiscMergeOperatorEqual:              return @"==";
         case MiscMergeOperatorNotEqual:           return @"!=";
@@ -377,8 +375,6 @@ static NSNumber *FALSE_VALUE;
 
 - (NSString *)operatorDescription
 {
-    NSString *operatorDescription;
-
     switch ( operator ) {
         case MiscMergeOperatorIn:    return @"==";
         case MiscMergeOperatorNotIn: return @"!=";
