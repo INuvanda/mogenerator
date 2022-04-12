@@ -968,7 +968,9 @@ NSString *ApplicationSupportSubdirectoryName = @"mogenerator";
         } else {
             NSString *momcTool = nil;
             {{
-                if (NO && [fm fileExistsAtPath:@"/usr/bin/xcrun"]) {
+                #pragma clang diagnostic push
+                #pragma ide diagnostic ignored "OCSimplifyInspectionLegacy"
+                if (/* DISABLES CODE */ (NO) && [fm fileExistsAtPath:@"/usr/bin/xcrun"]) {
                     // Cool, we can just use Xcode 3.2.6/4.x's xcrun command to find and execute momc for us.
                     momcTool = @"/usr/bin/xcrun momc";
                 } else {
@@ -992,6 +994,7 @@ NSString *ApplicationSupportSubdirectoryName = @"mogenerator";
                     }
                     assert(momcTool && "momc not found");
                 }
+#pragma clang diagnostic pop
             }}
 
             NSMutableString *momcOptions = [NSMutableString string];
