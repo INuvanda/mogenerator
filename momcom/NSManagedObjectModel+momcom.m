@@ -29,14 +29,14 @@
             // First pass through entities: Create entities without inheritance, relationship destination entities, or inverse relationships
             for (NSXMLElement *currentEntityXMLElement in entityElements) {
                 NSEntityDescription *entityDescription = [NSEntityDescription baseEntityForXML:currentEntityXMLElement];
-                [compiledEntities setObject:entityDescription forKey:[entityDescription name]];
+                compiledEntities[[entityDescription name]] = entityDescription;
             }
             [model setEntities:[compiledEntities allValues]];
             
             // Second pass through entities: Stitch up inter-entity stuff now that the entities and relationships exist.
             for (NSXMLElement *currentEntityXMLElement in entityElements) {
                 NSString *currentEntityName = [[currentEntityXMLElement attributeForName:@"name"] stringValue];
-                NSEntityDescription *entityDescription = [[model entitiesByName] objectForKey:currentEntityName];
+                NSEntityDescription *entityDescription = [model entitiesByName][currentEntityName];
                 [entityDescription postProcessEntityRelationshipsWithXML:currentEntityXMLElement];
             }
             
@@ -55,7 +55,7 @@
                 }
                 for (NSXMLElement *memberEntityElement in memberEntityElements) {
                     NSString *memberEntityName = [[memberEntityElement attributeForName:@"name"] stringValue];
-                    NSEntityDescription *memberEntity = [[model entitiesByName] objectForKey:memberEntityName];
+                    NSEntityDescription *memberEntity = [model entitiesByName][memberEntityName];
                     [configurationEntities addObject:memberEntity];
                 }
                 if ([configurationEntities count] > 0) {
@@ -144,29 +144,29 @@
                     return nil;
                 }
                 NSString *modelName = [filename stringByDeletingPathExtension];
-                [modelPathsByName setObject:compiledModelPath forKey:modelName];
+                modelPathsByName[modelName] = compiledModelPath;
             } else if ([filename isEqualToString:@".xccurrentversion"]) {
                 NSDictionary *versionInfo = [NSDictionary dictionaryWithContentsOfFile:fullPath];
-                currentVersionName = [[versionInfo objectForKey:@"_XCCurrentVersionName"] stringByDeletingPathExtension];
+                currentVersionName = [versionInfo[@"_XCCurrentVersionName"] stringByDeletingPathExtension];
             }
         }
         
         if (currentVersionName != nil) {
             // Run through each model to generate VersionInfo.plist
             NSMutableDictionary *versionInfo = [NSMutableDictionary dictionary];
-            [versionInfo setObject:currentVersionName forKey:@"NSManagedObjectModel_CurrentVersionName"];
+            versionInfo[@"NSManagedObjectModel_CurrentVersionName"] = currentVersionName;
             NSMutableDictionary *versionHashes = [NSMutableDictionary dictionary];
-            [versionInfo setObject:versionHashes forKey:@"NSManagedObjectModel_VersionHashes"];
+            versionInfo[@"NSManagedObjectModel_VersionHashes"] = versionHashes;
             
             for (NSString *modelName in [modelPathsByName allKeys]) {
                 NSMutableDictionary *currentVersionHashes = [NSMutableDictionary dictionary];
-                [versionHashes setObject:currentVersionHashes forKey:modelName];
+                versionHashes[modelName] = currentVersionHashes;
                 
-                NSString *compiledModelPath = [modelPathsByName objectForKey:modelName];
+                NSString *compiledModelPath = modelPathsByName[modelName];
                 NSManagedObjectModel *compiledModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:[NSURL fileURLWithPath:compiledModelPath]];
                 for (NSEntityDescription *entityDescription in compiledModel) {
                     NSData *versionHash = [entityDescription versionHash];
-                    [currentVersionHashes setObject:versionHash forKey:[entityDescription name]];
+                    currentVersionHashes[[entityDescription name]] = versionHash;
                 }
             }
             NSString *versionInfoPath = [momdPath stringByAppendingPathComponent:@"VersionInfo.plist"];

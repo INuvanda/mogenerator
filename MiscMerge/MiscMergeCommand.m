@@ -521,7 +521,7 @@
 - (MiscMergeExpression *)_getAndExpressionFromScanner:(NSScanner *)aScanner
 {
     MiscMergeExpression *expression = [self _getEqualExpressionFromScanner:aScanner];
-    NSMutableArray *array = [NSMutableArray arrayWithObject:expression];
+    NSMutableArray *array = [@[expression] mutableCopy];
 
     while ( 1 ) {
         if ( [self eatKeyWord:@"&&" fromScanner:aScanner isOptional:YES] ||
@@ -544,7 +544,7 @@
 - (MiscMergeExpression *)_getOrExpressionFromScanner:(NSScanner *)aScanner
 {
     MiscMergeExpression *expression = [self _getAndExpressionFromScanner:aScanner];
-    NSMutableArray *array = [NSMutableArray arrayWithObject:expression];
+    NSMutableArray *array = [@[expression] mutableCopy];
 
     while ( 1 ) {
         if ( [self eatKeyWord:@"||" fromScanner:aScanner isOptional:YES] ||
@@ -567,7 +567,7 @@
 - (MiscMergeExpression *)getExpressionFromScanner:(NSScanner *)aScanner
 {
     MiscMergeExpression *expression = [self _getOrExpressionFromScanner:aScanner];
-    NSMutableArray *array = [NSMutableArray arrayWithObject:expression];
+    NSMutableArray *array = [@[expression] mutableCopy];
     
     while ( 1 ) {
         if ( [self eatKeyWord:@"," fromScanner:aScanner isOptional:YES] ) {

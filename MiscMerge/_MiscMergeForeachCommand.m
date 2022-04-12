@@ -92,9 +92,9 @@
         while ((exitCode != MiscMergeCommandExitBreak) && (currObject = [itemEnum nextObject]))
         {
             // maybe index should be a string
-            [loopContext setObject:[itemArray objectForKey:currObject] forKey:itemName];
-            [loopContext setObject:currObject forKey:keyName];
-            [loopContext setObject:[NSNumber numberWithInt:loopIndex] forKey:indexName];
+            loopContext[itemName] = [itemArray objectForKey:currObject];
+            loopContext[keyName] = currObject;
+            loopContext[indexName] = @(loopIndex);
             exitCode = [aMerger executeCommandBlock:commandBlock];
             loopIndex++;
         }
@@ -113,8 +113,8 @@
         while ((exitCode != MiscMergeCommandExitBreak) && (currObject = [itemEnum nextObject]))
         {
             // maybe index should be a string
-            [loopContext setObject:currObject forKey:itemName];
-            [loopContext setObject:[NSNumber numberWithInt:loopIndex] forKey:indexName];
+            loopContext[itemName] = currObject;
+            loopContext[indexName] = @(loopIndex);
             exitCode = [aMerger executeCommandBlock:commandBlock];
             loopIndex++;
         }

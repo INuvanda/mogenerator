@@ -113,7 +113,7 @@
 {
     [super init];
     topLevelCommands = [[MiscMergeCommandBlock alloc] init];
-    commandStack = [[NSMutableArray arrayWithObject:topLevelCommands] retain];
+    commandStack = [[@[topLevelCommands] mutableCopy] retain];
     startDelimiter = [[[self class] defaultStartDelimiter] retain];
     endDelimiter = [[[self class] defaultEndDelimiter] retain];
     return self;

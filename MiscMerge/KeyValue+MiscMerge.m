@@ -74,7 +74,7 @@ static Ivar_t class_getInstanceVariable(Class aClass, const char *name);
 
 - (BOOL)hasMiscMergeKey:(NSString *)key
 {
-    return ([self objectForKey:key] != nil)? YES : NO;
+    return (self[key] != nil)? YES : NO;
 }
 
 @end
@@ -86,7 +86,7 @@ static Ivar_t class_getInstanceVariable(Class aClass, const char *name);
     if ([key isEqualToString:@"count"]) return YES;
     if ([key hasPrefix:@"@"]) return YES;
     if ([self count] == 0) return YES; //Hmm
-    return [[self objectAtIndex:0] hasMiscMergeKey:key];
+    return [self[0] hasMiscMergeKey:key];
 }
 
 @end

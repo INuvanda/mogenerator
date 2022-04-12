@@ -148,10 +148,8 @@
     }
     [self addOption];
     
-    NSArray * optionInfo = [NSArray arrayWithObjects:
-        key, [NSNumber numberWithInt: argumentOptions], nil];
-    [mOptionInfoMap setObject: optionInfo
-                       forKey: [NSNumber numberWithInt: shortOptionValue]];
+    NSArray * optionInfo = @[key, @(argumentOptions)];
+    mOptionInfoMap[@(shortOptionValue)] = optionInfo;
     
     [mUtf8Data addObject: utf8Data];
 }
@@ -180,10 +178,10 @@
                 NSArray *argumentsFromFile = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:argumentsFilePath] options:0 error:&error];
                 if (argumentsFromFile != nil) {
                     NSAssert([arguments count] > 0, @"Process has no arguments (not even the command). Weird.");
-                    NSString *command = [arguments objectAtIndex:0];
+                    NSString *command = arguments[0];
                     arguments = [arguments subarrayWithRange:NSMakeRange(1, [arguments count] - 1)];
                     
-                    NSMutableArray *mutableArguments = [NSMutableArray arrayWithObject:command];
+                    NSMutableArray *mutableArguments = [@[command] mutableCopy];
                     [mutableArguments addObjectsFromArray:argumentsFromFile];
                     [mutableArguments addObjectsFromArray:arguments];
                     arguments = [NSArray arrayWithArray:mutableArguments];
@@ -207,7 +205,7 @@
     NSUInteger i;
     for (i = 0; i < argc; i++)
     {
-        NSString * argument = [arguments objectAtIndex: i];
+        NSString * argument = arguments[i];
         argv[i] = (char *) [argument UTF8String];
     }
     argv[i] = 0;
@@ -243,29 +241,29 @@
         if (optarg != NULL)
             nsoptarg = [NSString stringWithUTF8String: optarg];
         
-        NSArray * optionInfo = [mOptionInfoMap objectForKey: [NSNumber numberWithInt: ch]];
+        NSArray * optionInfo = mOptionInfoMap[@(ch)];
         NSAssert(optionInfo != nil, @"optionInfo should not be nil");
 
         if (optionInfo != nil)
         {
-            NSString * key = [optionInfo objectAtIndex: 0];
-            int argumentOptions = [[optionInfo objectAtIndex: 1] intValue];
+            NSString * key = optionInfo[0];
+            int argumentOptions = [optionInfo[1] intValue];
             if (argumentOptions == DDGetoptNoArgument)
-                [mTarget setValue: [NSNumber numberWithBool: YES] forKey: key];
+                [mTarget setValue:@YES forKey:key];
             else if (argumentOptions == DDGetoptKeyValueArgument)
             {
                 // Split the arguement on the '=' sign
                 NSArray *pair = [nsoptarg componentsSeparatedByString:@"="];
                 // Build a keypath from the argument and the new key
-                NSString *keypath = [NSString stringWithFormat:@"%@.%@", key, [pair objectAtIndex:0]];
+                NSString *keypath = [NSString stringWithFormat:@"%@.%@", key, pair[0]];
                 
                 // If it is a number or a boolean, we'll parse that out
-                NSString *value = [pair objectAtIndex:1];
+                NSString *value = pair[1];
                 id parsedValue = value;
                 // Looks like a boolean?
                 if ([value isCaseInsensitiveLike:@"true"] || [value isCaseInsensitiveLike:@"false"])
                 {
-                    parsedValue = [NSNumber numberWithBool:[value boolValue]];
+                    parsedValue = @([value boolValue]);
                 }
                 else
                 {

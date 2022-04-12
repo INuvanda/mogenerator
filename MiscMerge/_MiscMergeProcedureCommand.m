@@ -65,19 +65,19 @@ typedef enum _ArgTypes {
         if ( [argName hasSuffix:@"?"] ) {
             optArgProcessing = YES;
             argName = [argName substringToIndex:([argName length] - 1)];
-            [argumentTypes addObject:[NSNumber numberWithInt:OptionalArg]];
+            [argumentTypes addObject:@(OptionalArg)];
         }
         else if ( [argName hasSuffix:@"..."] ) {
             argName = [argName substringToIndex:([argName length] - 3)];
             [aScanner remainingString];
-            [argumentTypes addObject:[NSNumber numberWithInt:ArrayArg]];
+            [argumentTypes addObject:@(ArrayArg)];
         }
         else if ( optArgProcessing ) {
             [template reportParseError:@"%@:  Can only specify optional arguments after an initial optional argument:  \"%@\".", procedureName, argName];
             return NO;
         }
         else {
-            [argumentTypes addObject:[NSNumber numberWithInt:RequiredArg]];
+            [argumentTypes addObject:@(RequiredArg)];
         }
 
         [argumentArray addObject:argName];
@@ -97,7 +97,7 @@ typedef enum _ArgTypes {
 {
     /* Just want to register ourselves to the engine */
     NSString *symbolName = [NSString stringWithFormat:@"_MiscMergeProcedure%@", procedureName];
-    [[aMerger userInfo] setObject:self forKey:symbolName];
+    [aMerger userInfo][symbolName] = self;
     return MiscMergeCommandExitNormal;
 }
 
@@ -113,31 +113,31 @@ typedef enum _ArgTypes {
         NSString *argName;
         int argType;
 
-        id argValue = [passedArgArray objectAtIndex:passedIndex];
+        id argValue = passedArgArray[passedIndex];
 
         if ( argumentIndex >= argumentCount ) {
             NSLog(@"%@: More arguments than declared.", procedureName);
             break;
         }
 
-        argName = [argumentArray objectAtIndex:argumentIndex];
-        argType = [[argumentTypes objectAtIndex:argumentIndex] intValue];
+        argName = argumentArray[argumentIndex];
+        argType = [argumentTypes[argumentIndex] intValue];
         
         switch ( argType ) {
             case RequiredArg:
             case OptionalArg:
                 if ( argValue == [NSNull null] )
                     argValue = @"";
-                [procedureContext setObject:argValue forKey:argName];
+                procedureContext[argName] = argValue;
                 argumentIndex++;
                 break;
 
             case ArrayArg:
             {
-                NSMutableArray *array = [procedureContext objectForKey:argName];
+                NSMutableArray *array = procedureContext[argName];
                 if ( array == nil ) {
                     array = [NSMutableArray array];
-                    [procedureContext setObject:array forKey:argName];
+                    procedureContext[argName] = array;
                 }
                 addToArgIndex = 1;
                 [array addObject:argValue];
@@ -154,14 +154,14 @@ typedef enum _ArgTypes {
         NSMutableString *string = [NSMutableString string];
         
         for ( ; argumentIndex < argumentCount; argumentIndex++ ) {
-            NSString *argName = [argumentArray objectAtIndex:argumentIndex];
-            int argType = [[argumentTypes objectAtIndex:argumentIndex] intValue];
+            NSString *argName = argumentArray[argumentIndex];
+            int argType = [argumentTypes[argumentIndex] intValue];
 
             if ( argType == OptionalArg ) {
-                [procedureContext setObject:@"" forKey:argName];
+                procedureContext[argName] = @"";
             }
             else if ( argType == ArrayArg ) {
-                [procedureContext setObject:[NSArray array] forKey:argName];
+                procedureContext[argName] = [NSArray array];
             }
             else {
                 if ( [string length] > 0 )

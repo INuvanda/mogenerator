@@ -120,7 +120,7 @@
     [aMerger addContextObject:loopContext];
     for (theIndex = start; (exitCode != MiscMergeCommandExitBreak) && ((step > 0)? (theIndex <= stop) : (theIndex >= stop)); theIndex += step)
     {
-        [loopContext setObject:[NSString stringWithFormat:@"%d", theIndex] forKey:indexName];
+        loopContext[indexName] = [NSString stringWithFormat:@"%d", theIndex];
         exitCode = [aMerger executeCommandBlock:commandBlock];
     }
     [aMerger removeContextObject:loopContext];

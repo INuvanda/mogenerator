@@ -33,7 +33,7 @@ static const NSString *const kIgnored = @"mogenerator.ignore";
     for (NSPropertyDescription *property in properties)
     {
         if ([property isKindOfClass:[NSFetchedPropertyDescription class]]) {
-            [fetchedPropertiesByName setObject:property forKey:[property name]];
+            fetchedPropertiesByName[[property name]] = property;
         }
     }
 
@@ -72,9 +72,9 @@ static const NSString *const kIgnored = @"mogenerator.ignore";
     NSMutableDictionary *result = [NSMutableDictionary dictionaryWithCapacity:[[self userInfo] count]];
     for (NSString *key in self.userInfo) {
         if ([key rangeOfCharacterFromSet:invalidCharacters].location == NSNotFound) {
-            NSString *value = [self.userInfo objectForKey:key];
+            NSString *value = self.userInfo[key];
             value = [value stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
-            [result setObject:value forKey:key];
+            result[key] = value;
         }
     }
 
@@ -89,7 +89,7 @@ static const NSString *const kIgnored = @"mogenerator.ignore";
 	NSMutableDictionary *userInfoByKeys = [NSMutableDictionary dictionary];
 
 	for (NSString *key in self.sanitizedUserInfo)
-		[userInfoByKeys setObject:[NSDictionary dictionaryWithObjectsAndKeys:key, @"key", [self.sanitizedUserInfo objectForKey:key], @"value", nil] forKey:key];
+		userInfoByKeys[key] = @{@"key": key, @"value": self.sanitizedUserInfo[key]};
 
 	return userInfoByKeys;
 }
@@ -131,14 +131,14 @@ static const NSString *const kIgnored = @"mogenerator.ignore";
         }
     }
 
-    return [result sortedArrayUsingDescriptors:[NSArray arrayWithObject:[[[NSSortDescriptor alloc] initWithKey:@"managedObjectClassName"
-                                                                                                     ascending:YES] autorelease]]];
+    return [result sortedArrayUsingDescriptors:@[[[[NSSortDescriptor alloc] initWithKey:@"managedObjectClassName"
+                                                                              ascending:YES] autorelease]]];
 }
 @end
 
 @implementation NSEntityDescription (userInfo)
 - (BOOL)isIgnored {
-    NSString *readonlyUserinfoValue = [[self userInfo] objectForKey:kIgnored];
+    NSString *readonlyUserinfoValue = [self userInfo][kIgnored];
     if (readonlyUserinfoValue != nil) {
         return YES;
     }
@@ -221,17 +221,17 @@ static const NSString *const kIgnored = @"mogenerator.ignore";
 }
 
 - (NSString*)forcedCustomBaseClass {
-    NSString* userInfoCustomBaseClass = [[self userInfo] objectForKey:kCustomBaseClass];
+    NSString* userInfoCustomBaseClass = [self userInfo][kCustomBaseClass];
     return userInfoCustomBaseClass ? userInfoCustomBaseClass : gCustomBaseClassForced;
 }
 /** @TypeInfo NSAttributeDescription */
 - (NSArray*)allAttributes {
-    NSArray *sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]];
+    NSArray *sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]];
     return [[[self attributesByName] allValues] sortedArrayUsingDescriptors:sortDescriptors];
 }
 /** @TypeInfo NSAttributeDescription */
 - (NSArray*)noninheritedAttributes {
-    NSArray *sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]];
+    NSArray *sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]];
     NSEntityDescription *superentity = [self superentity];
     if (superentity) {
         NSMutableArray *result = [[[[self attributesByName] allValues] mutableCopy] autorelease];
@@ -243,11 +243,11 @@ static const NSString *const kIgnored = @"mogenerator.ignore";
 }
 
 - (NSString*)additionalHeaderFileName {
-    return [[self userInfo] objectForKey:kAdditionalHeaderFileNameKey];
+    return [self userInfo][kAdditionalHeaderFileNameKey];
 }
 
 - (NSArray *)additionalImports {
-    NSString *csvString = [[self userInfo] objectForKey:kAdditionalImportsKey];
+    NSString *csvString = [self userInfo][kAdditionalImportsKey];
     NSMutableArray *imports = [[csvString componentsSeparatedByString:@","] mutableCopy];
     [imports enumerateObjectsUsingBlock:^(NSString *import, NSUInteger idx, BOOL * _Nonnull stop) {
         imports[idx] = [import stringByTrimmingCharactersInSet:NSCharacterSet.whitespaceCharacterSet];
@@ -273,12 +273,12 @@ static const NSString *const kIgnored = @"mogenerator.ignore";
 }
 /** @TypeInfo NSRelationshipDescription */
 - (NSArray*)allRelationships {
-    NSArray *sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]];
+    NSArray *sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]];
     return [[[self relationshipsByName] allValues] sortedArrayUsingDescriptors:sortDescriptors];
 }
 /** @TypeInfo NSRelationshipDescription */
 - (NSArray*)noninheritedRelationships {
-    NSArray *sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]];
+    NSArray *sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]];
     NSEntityDescription *superentity = [self superentity];
     if (superentity) {
         NSMutableArray *result = [[[[self relationshipsByName] allValues] mutableCopy] autorelease];
@@ -290,7 +290,7 @@ static const NSString *const kIgnored = @"mogenerator.ignore";
 }
 /** @TypeInfo NSEntityUserInfoDescription */
 - (NSArray*)userInfoKeyValues {
-	NSArray *sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"key" ascending:YES]];
+	NSArray *sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"key" ascending:YES]];
 	NSEntityDescription *superentity = [self superentity];
 	if (superentity) {
 		NSMutableArray *result = [[[[self userInfoByKeys] allValues] mutableCopy] autorelease];
@@ -302,7 +302,7 @@ static const NSString *const kIgnored = @"mogenerator.ignore";
 }
 /** @TypeInfo NSFetchedPropertyDescription */
 - (NSArray*)noninheritedFetchedProperties {
-    NSArray *sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]];
+    NSArray *sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]];
     NSEntityDescription *superentity = [self superentity];
     if (superentity) {
         NSMutableArray *result = [[[[self fetchedPropertiesByName] allValues] mutableCopy] autorelease];
@@ -333,9 +333,9 @@ static const NSString *const kIgnored = @"mogenerator.ignore";
     NSArray *keys = [fetchRequests allKeys];
     for (NSString *fetchRequestName in keys)
     {
-        NSFetchRequest *fetchRequest = [fetchRequests objectForKey:fetchRequestName];
+        NSFetchRequest *fetchRequest = fetchRequests[fetchRequestName];
         if ([fetchRequest entity] == self) {
-            [result setObject:fetchRequest forKey:fetchRequestName];
+            result[fetchRequestName] = fetchRequest;
         }
     }
     return result;
@@ -349,7 +349,7 @@ static const NSString *const kIgnored = @"mogenerator.ignore";
     NSEntityDescription *entity = self;
     for (NSString *key in components)
     {
-        id property = [[entity propertiesByName] objectForKey:key];
+        id property = [entity propertiesByName][key];
         if ([property isKindOfClass:[NSAttributeDescription class]]) {
             NSString *result = [property objectAttributeType];
             return gSwift ? result : [result substringToIndex:[result length] -1];
@@ -365,7 +365,7 @@ static const NSString *const kIgnored = @"mogenerator.ignore";
 // auxiliary function
 - (BOOL)bindingsArray:(NSArray*)bindings containsVariableNamed:(NSString*)name {
     for (NSDictionary *dict in bindings) {
-        if ([[dict objectForKey:@"name"] isEqual:name]) {
+        if ([dict[@"name"] isEqual:name]) {
             return YES;
         }
     }
@@ -396,7 +396,7 @@ static const NSString *const kIgnored = @"mogenerator.ignore";
 
                 NSString *type = nil;
 
-                NSAttributeDescription *attribute = [[self attributesByName] objectForKey:[lhs keyPath]];
+                NSAttributeDescription *attribute = [self attributesByName][[lhs keyPath]];
                 if (attribute) {
                     type = [attribute objectAttributeClassName];
                 } else {
@@ -407,10 +407,8 @@ static const NSString *const kIgnored = @"mogenerator.ignore";
                 }
                 // make sure that no repeated variables are entered here.
                 if (![self bindingsArray:bindings_ containsVariableNamed:[rhs variable]]) {
-                    [bindings_ addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-                                      [rhs variable], @"name",
-                                      type, @"type",
-                                      nil]];
+                    [bindings_ addObject:@{@"name": [rhs variable],
+                            @"type": type}];
                 }
             } break;
             default:
@@ -425,15 +423,13 @@ static const NSString *const kIgnored = @"mogenerator.ignore";
     NSArray *keys = [fetchRequests allKeys];
     for (NSString *fetchRequestName in keys)
     {
-        NSFetchRequest *fetchRequest = [fetchRequests objectForKey:fetchRequestName];
+        NSFetchRequest *fetchRequest = fetchRequests[fetchRequestName];
         NSMutableArray *bindings = [NSMutableArray array];
         [self _processPredicate:[fetchRequest predicate] bindings:bindings];
-        [result addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-                           fetchRequestName, @"name",
-                           bindings, @"bindings",
-                           [NSNumber numberWithBool:[bindings count] > 0], @"hasBindings",
-                           [NSNumber numberWithBool:[fetchRequestName hasPrefix:@"one"]], @"singleResult",
-                           nil]];
+        [result addObject:@{@"name": fetchRequestName,
+                @"bindings": bindings,
+                @"hasBindings": @([bindings count] > 0),
+                @"singleResult": @([fetchRequestName hasPrefix:@"one"])}];
     }
     return result;
 }
@@ -467,7 +463,7 @@ static const NSString *const kIgnored = @"mogenerator.ignore";
 }
 
 - (BOOL)usesScalarAttributeType {
-    NSNumber *usesScalarAttributeType = [[self userInfo] objectForKey:kUsesScalarAttributeType];
+    NSNumber *usesScalarAttributeType = [self userInfo][kUsesScalarAttributeType];
 
     if (usesScalarAttributeType) {
         return usesScalarAttributeType.boolValue;
@@ -477,14 +473,14 @@ static const NSString *const kIgnored = @"mogenerator.ignore";
 }
 
 - (BOOL)usesCustomScalarAttributeType {
-    NSString *attributeValueScalarType = [[self userInfo] objectForKey:kAttributeValueScalarTypeKey];
+    NSString *attributeValueScalarType = [self userInfo][kAttributeValueScalarTypeKey];
     return (attributeValueScalarType != nil);
 }
 
 - (NSString*)scalarAttributeType {
     BOOL isUnsigned = [self isUnsigned];
 
-    NSString *attributeValueScalarType = [[self userInfo] objectForKey:kAttributeValueScalarTypeKey];
+    NSString *attributeValueScalarType = [self userInfo][kAttributeValueScalarTypeKey];
 
     if (attributeValueScalarType) {
         return attributeValueScalarType;
@@ -591,7 +587,7 @@ static const NSString *const kIgnored = @"mogenerator.ignore";
 - (NSString*)objectAttributeClassName {
     NSString *result = nil;
     if ([self hasTransformableAttributeType]) {
-        result = [[self userInfo] objectForKey:@"attributeValueClassName"];
+        result = [self userInfo][@"attributeValueClassName"];
         if (!result) {
             result = gSwift ? @"AnyObject" : @"NSObject";
         }
@@ -630,7 +626,7 @@ static const NSString *const kIgnored = @"mogenerator.ignore";
 }
 - (NSArray*)objectAttributeTransformableProtocols {
     if ([self hasAttributeTransformableProtocols]) {
-        NSString *protocolsString = [[self userInfo] objectForKey:@"attributeTransformableProtocols"];
+        NSString *protocolsString = [self userInfo][@"attributeTransformableProtocols"];
         NSCharacterSet *removeCharSet = [NSCharacterSet characterSetWithCharactersInString:@", "];
         NSMutableArray *protocols = [NSMutableArray arrayWithArray:[protocolsString componentsSeparatedByCharactersInSet:removeCharSet]];
         [protocols removeObject:@""];
@@ -639,11 +635,11 @@ static const NSString *const kIgnored = @"mogenerator.ignore";
     return nil;
 }
 - (BOOL)hasAttributeTransformableProtocols {
-    return [self hasTransformableAttributeType] && [[self userInfo] objectForKey:@"attributeTransformableProtocols"];
+    return [self hasTransformableAttributeType] && [self userInfo][@"attributeTransformableProtocols"];
 }
 
 - (BOOL)usesCustomObjectAttributeType {
-    NSString *attributeValueClassName = [[self userInfo] objectForKey:@"attributeValueClassName"];
+    NSString *attributeValueClassName = [self userInfo][@"attributeValueClassName"];
     return (attributeValueClassName != nil);
 }
 
@@ -665,7 +661,7 @@ static const NSString *const kIgnored = @"mogenerator.ignore";
 }
 
 - (BOOL)isReadonly {
-    NSString *readonlyUserinfoValue = [[self userInfo] objectForKey:kReadOnly];
+    NSString *readonlyUserinfoValue = [self userInfo][kReadOnly];
     if (readonlyUserinfoValue != nil) {
         return YES;
     }
@@ -716,9 +712,9 @@ static const NSString *const kIgnored = @"mogenerator.ignore";
     NSUInteger wordIndex = 1, wordCount = [lowerCasedWordArray count];
     NSMutableArray *camelCasedWordArray = [NSMutableArray arrayWithCapacity:wordCount];
     if (wordCount)
-        [camelCasedWordArray addObject:[lowerCasedWordArray objectAtIndex:0]];
+        [camelCasedWordArray addObject:lowerCasedWordArray[0]];
     for (; wordIndex < wordCount; wordIndex++) {
-        [camelCasedWordArray addObject:[[lowerCasedWordArray objectAtIndex:wordIndex] initialCapitalString]];
+        [camelCasedWordArray addObject:[lowerCasedWordArray[wordIndex] initialCapitalString]];
     }
     return [camelCasedWordArray componentsJoinedByString:@""];
 }
@@ -893,7 +889,7 @@ NSString *ApplicationSupportSubdirectoryName = @"mogenerator";
         NSTask *task = [[[NSTask alloc] init] autorelease];
         [task setLaunchPath:@"/usr/bin/xcode-select"];
 
-        [task setArguments:[NSArray arrayWithObject:@"-print-path"]];
+        [task setArguments:@[@"-print-path"]];
 
         NSPipe *pipe = [NSPipe pipe];
         [task setStandardOutput:pipe];
@@ -935,7 +931,7 @@ NSString *ApplicationSupportSubdirectoryName = @"mogenerator";
         NSString *xccurrentversionPath = [momOrXCDataModelFilePath stringByAppendingPathComponent:@".xccurrentversion"];
         if ([fm fileExistsAtPath:xccurrentversionPath]) {
             NSDictionary *xccurrentversionPlist = [NSDictionary dictionaryWithContentsOfFile:xccurrentversionPath];
-            NSString *currentModelName = [xccurrentversionPlist objectForKey:@"_XCCurrentVersionName"];
+            NSString *currentModelName = xccurrentversionPlist[@"_XCCurrentVersionName"];
             if (currentModelName) {
                 momOrXCDataModelFilePath = [momOrXCDataModelFilePath stringByAppendingPathComponent:currentModelName];
             }
@@ -968,8 +964,8 @@ NSString *ApplicationSupportSubdirectoryName = @"mogenerator";
         } else {
             NSString *momcTool = nil;
             {{
-                #pragma clang diagnostic push
-                #pragma ide diagnostic ignored "OCSimplifyInspectionLegacy"
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "OCSimplifyInspectionLegacy"
                 if (/* DISABLES CODE */ (NO) && [fm fileExistsAtPath:@"/usr/bin/xcrun"]) {
                     // Cool, we can just use Xcode 3.2.6/4.x's xcrun command to find and execute momc for us.
                     momcTool = @"/usr/bin/xcrun momc";
@@ -999,13 +995,11 @@ NSString *ApplicationSupportSubdirectoryName = @"mogenerator";
 
             NSMutableString *momcOptions = [NSMutableString string];
             {{
-                NSArray *supportedMomcOptions = [NSArray arrayWithObjects:
-                                                 @"MOMC_NO_WARNINGS",
-                                                 @"MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS",
-                                                 @"MOMC_SUPPRESS_INVERSE_TRANSIENT_ERROR",
-                                                 nil];
+                NSArray *supportedMomcOptions = @[@"MOMC_NO_WARNINGS",
+                        @"MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS",
+                        @"MOMC_SUPPRESS_INVERSE_TRANSIENT_ERROR"];
                 for (NSString *momcOption in supportedMomcOptions) {
-                    if ([[[NSProcessInfo processInfo] environment] objectForKey:momcOption]) {
+                    if ([[NSProcessInfo processInfo] environment][momcOption]) {
                         [momcOptions appendFormat:@" -%@ ", momcOption];
                     }
                 }
@@ -1112,7 +1106,7 @@ NSString *ApplicationSupportSubdirectoryName = @"mogenerator";
     if (_orphaned) {
         NSMutableDictionary *entityFilesByName = [NSMutableDictionary dictionary];
 
-        NSArray *srcDirs = [NSArray arrayWithObjects:machineDir, humanDir, nil];
+        NSArray *srcDirs = @[machineDir, humanDir];
         for (NSString *srcDir in srcDirs)
         {
             if (![srcDir length]) {
@@ -1125,11 +1119,11 @@ NSString *ApplicationSupportSubdirectoryName = @"mogenerator";
                 NSString *moSourceFileRegex = @"_?([a-zA-Z0-9_]+MO).(h|m|mm)"; // Sadly /^(*MO).(h|m|mm)$/ doesn't work.
 
                 if ([srcFileName isMatchedByRegex:moSourceFileRegex]) {
-                    NSString *entityName = [[srcFileName captureComponentsMatchedByRegex:moSourceFileRegex] objectAtIndex:1];
-                    if (![entityFilesByName objectForKey:entityName]) {
-                        [entityFilesByName setObject:[NSMutableSet set] forKey:entityName];
+                    NSString *entityName = [srcFileName captureComponentsMatchedByRegex:moSourceFileRegex][1];
+                    if (!entityFilesByName[entityName]) {
+                        entityFilesByName[entityName] = [NSMutableSet set];
                     }
-                    [[entityFilesByName objectForKey:entityName] addObject:srcFileName];
+                    [entityFilesByName[entityName] addObject:srcFileName];
                 }
 
             }
@@ -1315,7 +1309,7 @@ NSString *ApplicationSupportSubdirectoryName = @"mogenerator";
         }
 
         if (_listSourceFiles) {
-            NSArray *filesList = [NSArray arrayWithObjects:humanMFiles, humanHFiles, machineMFiles, machineHFiles, nil];
+            NSArray *filesList = @[humanMFiles, humanHFiles, machineMFiles, machineHFiles];
 
             for (NSArray *files in filesList)
             {

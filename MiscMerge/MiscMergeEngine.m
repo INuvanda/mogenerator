@@ -127,7 +127,7 @@ static NSMutableDictionary *globalSymbols = nil;
     if (anObject == nil)
         [self removeGlobalValueForKey:aKey];
     else
-        [[self globalSymbolsDictionary] setObject:anObject forKey:aKey];
+        [self globalSymbolsDictionary][aKey] = anObject;
 }
 
 /*" Removes the global value associated with aKey. "*/
@@ -139,7 +139,7 @@ static NSMutableDictionary *globalSymbols = nil;
 /*" Returns the global value for aKey. "*/
 + (id)globalValueForKey:(NSString *)aKey
 {
-    return [globalSymbols objectForKey:aKey];
+    return globalSymbols[aKey];
 }
 
 
@@ -329,7 +329,7 @@ static NSMutableDictionary *globalSymbols = nil;
 - (void)setEngineValue:(id)anObject forKey:(NSString *)aKey
 {
     if (anObject)
-        [engineSymbols setObject:anObject forKey:aKey];
+        engineSymbols[aKey] = anObject;
     else
         [self removeGlobalValueForKey:aKey];
 }
@@ -342,7 +342,7 @@ static NSMutableDictionary *globalSymbols = nil;
 /*" Returns the engine value associated with aKey "*/
 - (id)engineValueForKey:(NSString *)aKey
 {
-    return [engineSymbols objectForKey:aKey];
+    return engineSymbols[aKey];
 }
 
 
@@ -356,7 +356,7 @@ static NSMutableDictionary *globalSymbols = nil;
 - (void)setMergeValue:(id)anObject forKey:(NSString *)aKey
 {
     if (anObject)
-        [mergeSymbols setObject:anObject forKey:aKey];
+        mergeSymbols[aKey] = anObject;
     else
         [self removeMergeValueForKey:aKey];
 }
@@ -368,7 +368,7 @@ static NSMutableDictionary *globalSymbols = nil;
 /*" Returns the merge value associated with aKey "*/
 - (id)mergeValueForKey:(NSString *)aKey
 {
-    return [mergeSymbols objectForKey:aKey];
+    return mergeSymbols[aKey];
 }
 
 
@@ -382,7 +382,7 @@ static NSMutableDictionary *globalSymbols = nil;
 - (void)setLocalValue:(id)anObject forKey:(NSString *)aKey
 {
     if (anObject)
-        [localSymbols setObject:anObject forKey:aKey];
+        localSymbols[aKey] = anObject;
     else
         [self removeLocalValueForKey:aKey];
 }
@@ -394,7 +394,7 @@ static NSMutableDictionary *globalSymbols = nil;
 /*" Returns the local value associated with aKey "*/
 - (id)localValueForKey:(NSString *)aKey
 {
-    return [localSymbols objectForKey:aKey];
+    return localSymbols[aKey];
 }
 
 
@@ -432,7 +432,7 @@ static NSMutableDictionary *globalSymbols = nil;
             localSymbols = nil;
 
             for ( i = [contextStack count] - 1; i >= 0; i-- ) {
-                id object = [contextStack objectAtIndex:i];
+                id object = contextStack[i];
 
                 if ( [object isKindOfClass:[NSMutableDictionary class]] ) {
                     localSymbols = object;
@@ -580,7 +580,7 @@ static NSMutableDictionary *globalSymbols = nil;
 
     for (i=0; (exitCode == MiscMergeCommandExitNormal) && (i<count); i++)
     {
-        exitCode = [self executeCommand:[commandArray objectAtIndex:i]];
+        exitCode = [self executeCommand:commandArray[i]];
     }
 
     [commandStack removeLastObject];
@@ -616,7 +616,7 @@ static NSMutableDictionary *globalSymbols = nil;
 
     for (i=[contextStack count]; i > 0 && !found; i--)
     {
-        id currContext = [contextStack objectAtIndex:i-1];
+        id currContext = contextStack[i - 1];
 
         if ([currContext hasMiscMergeKeyPath:fieldName])
         {

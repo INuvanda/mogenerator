@@ -53,7 +53,7 @@
 
     // Need to add com.apple.syncservices.Syncable = NO to self's userInfo unless syncable=YES appears in XML attributes.
     if (!syncable) {
-        [userInfo setObject:@"NO" forKey:@"com.apple.syncservices.Syncable"];
+        userInfo[@"com.apple.syncservices.Syncable"] = @"NO";
     }
 
     for (NSXMLElement *childNode in [xmlNode children]) {
@@ -61,7 +61,7 @@
             for (NSXMLElement *entryElement in [childNode children]) {
                 NSXMLNode *keyAttribute = [entryElement attributeForName:@"key"];
                 NSXMLNode *valueAttribute = [entryElement attributeForName:@"value"];
-                [userInfo setObject:[valueAttribute stringValue] forKey:[keyAttribute stringValue]];
+                userInfo[[keyAttribute stringValue]] = [valueAttribute stringValue];
             }
         }
     }

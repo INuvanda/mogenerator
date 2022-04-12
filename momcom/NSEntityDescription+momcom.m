@@ -47,7 +47,7 @@
     
     // Need to add com.apple.syncservices.Syncable = NO to self's userInfo unless syncable=YES appears in XML attributes.
     if (!syncable) {
-        [userInfo setObject:@"NO" forKey:@"com.apple.syncservices.Syncable"];
+        userInfo[@"com.apple.syncservices.Syncable"] = @"NO";
     }
     
     // Run through child elements, create properties and userInfo, but skip compoundIndexes for now.
@@ -66,7 +66,7 @@
             for (NSXMLElement *entryElement in [childNode children]) {
                 NSXMLNode *keyAttribute = [entryElement attributeForName:@"key"];
                 NSXMLNode *valueAttribute = [entryElement attributeForName:@"value"];
-                [userInfo setObject:[valueAttribute stringValue] forKey:[keyAttribute stringValue]];
+                userInfo[[keyAttribute stringValue]] = [valueAttribute stringValue];
             }
         }
     }
@@ -88,7 +88,7 @@
             NSArray *compoundIndexNameElements = [compoundIndexElement nodesForXPath:@"index" error:nil];
             for (NSXMLElement *compoundIndexNameElement in compoundIndexNameElements) {
                 NSString *compoundIndexName = [[compoundIndexNameElement attributeForName:@"value"] stringValue];
-                NSPropertyDescription *compoundIndexProperty = [[entityDescription propertiesByName] objectForKey:compoundIndexName];
+                NSPropertyDescription *compoundIndexProperty = [entityDescription propertiesByName][compoundIndexName];
                 [currentCompoundIndex addObject:compoundIndexProperty];
             }
             if ([currentCompoundIndex count] > 0) {
@@ -115,7 +115,7 @@
     NSXMLNode *parentEntityNode = [xmlElement attributeForName:@"parentEntity"];
     if (parentEntityNode != nil) {
         NSString *parentEntityName = [parentEntityNode stringValue];
-        NSEntityDescription *parentEntity = [[[self managedObjectModel] entitiesByName] objectForKey:parentEntityName];
+        NSEntityDescription *parentEntity = [[self managedObjectModel] entitiesByName][parentEntityName];
         [self _setParentEntity:parentEntity];
     }
     
@@ -123,10 +123,10 @@
     NSArray *relationshipNodes = [xmlElement nodesForXPath:@"relationship" error:&relationshipXpathError];
     for (NSXMLElement *relationshipNode in relationshipNodes) {
         NSString *relationshipName = [[relationshipNode attributeForName:@"name"] stringValue];
-        NSRelationshipDescription *relationship = [[self propertiesByName] objectForKey:relationshipName];
+        NSRelationshipDescription *relationship = [self propertiesByName][relationshipName];
         
         NSString *destinationEntityName = [[relationshipNode attributeForName:@"destinationEntity"] stringValue];
-        NSEntityDescription *destinationEntity = [[[self managedObjectModel] entitiesByName] objectForKey:destinationEntityName];
+        NSEntityDescription *destinationEntity = [[self managedObjectModel] entitiesByName][destinationEntityName];
         [relationship setDestinationEntity:destinationEntity];
 
         NSXMLNode *inverseNameElement = [relationshipNode attributeForName:@"inverseName"];
@@ -136,10 +136,10 @@
             // It's not clear whether it's possible for the inverse entity to not be the same as the destination entity.
             // They're stored separately, so they're handled separately.
             NSString *inverseEntityName = [inverseEntityElement stringValue];
-            NSEntityDescription *inverseEntity = [[[self managedObjectModel] entitiesByName] objectForKey:inverseEntityName];
+            NSEntityDescription *inverseEntity = [[self managedObjectModel] entitiesByName][inverseEntityName];
             
             NSString *inverseName = [inverseNameElement stringValue];
-            NSRelationshipDescription *inverseRelationship = [[inverseEntity propertiesByName] objectForKey:inverseName];
+            NSRelationshipDescription *inverseRelationship = [inverseEntity propertiesByName][inverseName];
             [relationship setInverseRelationship:inverseRelationship];
         }
     }
@@ -148,13 +148,13 @@
     NSArray *fetchedPropertyNodes = [xmlElement nodesForXPath:@"fetchedProperty" error:&fetchedPropertyXpathError];
     for (NSXMLElement *fetchedPropertyNode in fetchedPropertyNodes) {
         NSString *fetchedPropertyName = [[fetchedPropertyNode attributeForName:@"name"] stringValue];
-        NSFetchedPropertyDescription *fetchedPropertyDescription = [[self propertiesByName] objectForKey:fetchedPropertyName];
+        NSFetchedPropertyDescription *fetchedPropertyDescription = [self propertiesByName][fetchedPropertyName];
 
         NSFetchRequest *fetchRequest = nil;
         
         NSArray *fetchRequestElements = [fetchedPropertyNode children];
         if ([fetchRequestElements count] == 1) {
-            NSXMLElement *fetchRequestElement = [fetchRequestElements objectAtIndex:0];
+            NSXMLElement *fetchRequestElement = fetchRequestElements[0];
             fetchRequest = [NSFetchRequest fetchRequestForXML:fetchRequestElement inManagedObjectModel:[self managedObjectModel]];
         }
 

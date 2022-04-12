@@ -53,7 +53,7 @@
     while ((argName = [self getArgumentStringFromScanner:aScanner toEnd:NO quotes:&quotes]))
     {
         [argumentArray addObject:argName];
-        [quotedArray addObject:[NSNumber numberWithInt:quotes]];
+        [quotedArray addObject:@(quotes)];
     }
 
     return YES;
@@ -62,7 +62,7 @@
 - (MiscMergeCommandExitType)executeForMerge:(MiscMergeEngine *)aMerger
 {
     NSString *symbolName = [NSString stringWithFormat:@"_MiscMergeProcedure%@", procedureName];
-    _MiscMergeProcedureCommand *procCommand = [[aMerger userInfo] objectForKey:symbolName];
+    _MiscMergeProcedureCommand *procCommand = [aMerger userInfo][symbolName];
     NSInteger i, count = [argumentArray count];
     NSMutableArray *realArgArray = [NSMutableArray arrayWithCapacity:count];
 
@@ -77,9 +77,9 @@
 
     for (i=0; i<count; i++)
     {
-        NSString *argument = [argumentArray objectAtIndex:i];
+        NSString *argument = argumentArray[i];
         id value = nil;
-        int quote = [[quotedArray objectAtIndex:i] intValue];
+        int quote = [quotedArray[i] intValue];
 
         if ( quote == 1 )
             value = argument;

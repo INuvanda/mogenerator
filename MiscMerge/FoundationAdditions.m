@@ -148,7 +148,7 @@ static NSInteger sortByName(id obj1, id obj2, void *context)
 
     for(i=0; i<count; i++)
     {
-        id object = [self objectAtIndex:i];
+        id object = self[i];
         id value = [object performSelector:aSelector withObject:anObject withObject:anObject2];
 
         if (value != nil) {
@@ -227,7 +227,7 @@ static NSInteger sortByName(id obj1, id obj2, void *context)
 
     for (i=0; i<count; i++)
     {
-        NSString *currPath = [paths objectAtIndex:i];
+        NSString *currPath = paths[i];
         NSString *fullPath = [currPath stringByAppendingPathComponent:filename];
 
         if ([self regularFileExistsAtPath:fullPath])
@@ -242,7 +242,7 @@ static NSInteger sortByName(id obj1, id obj2, void *context)
     NSMutableDictionary *attributes;
 
     attributes = [[NSMutableDictionary alloc] initWithCapacity:1];
-    [attributes setObject:[NSDate date] forKey:NSFileModificationDate];
+    attributes[NSFileModificationDate] = [NSDate date];
     [self setAttributes:attributes ofItemAtPath:filePath error:nil];
     [attributes release];
 }

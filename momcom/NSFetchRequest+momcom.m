@@ -17,7 +17,7 @@
     if ([[fetchRequestXMLNode name] isEqualToString:@"fetchRequest"]) {
         NSString *targetEntityName = [[fetchRequestXMLNode attributeForName:@"entity"] stringValue];
         if (targetEntityName != nil) {
-            NSEntityDescription *targetEntity = [[model entitiesByName] objectForKey:targetEntityName];
+            NSEntityDescription *targetEntity = [model entitiesByName][targetEntityName];
             fetchRequest = [[NSFetchRequest alloc] init];
             [fetchRequest setEntity:targetEntity];
         }

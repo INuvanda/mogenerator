@@ -46,7 +46,7 @@ const NSString *const kAttributeValueClassName = @"attributeValueClassName";
     
     NSXMLNode *attributeElement = [xmlNode attributeForName:@"attributeType"];
     if (attributeElement != nil) {
-        NSNumber *attributeType = [attributeTypeForString objectForKey:[attributeElement stringValue]];
+        NSNumber *attributeType = attributeTypeForString[[attributeElement stringValue]];
         if (attributeType != nil) {
             [attributeDescription setAttributeType:[attributeType integerValue]];
         }
@@ -135,10 +135,10 @@ const NSString *const kAttributeValueClassName = @"attributeValueClassName";
             case NSInteger64AttributeType:
             {
                 if (minValueElement != nil) {
-                    minValue = [NSNumber numberWithInteger:[minValueString integerValue]];
+                    minValue = @([minValueString integerValue]);
                 }
                 if (maxValueElement != nil) {
-                    maxValue = [NSNumber numberWithInteger:[maxValueString integerValue]];
+                    maxValue = @([maxValueString integerValue]);
                 }
                 break;
             }
@@ -147,10 +147,10 @@ const NSString *const kAttributeValueClassName = @"attributeValueClassName";
             case NSFloatAttributeType:
             {
                 if (minValueElement != nil) {
-                    minValue = [NSNumber numberWithDouble:[minValueString doubleValue]];
+                    minValue = @([minValueString doubleValue]);
                 }
                 if (maxValueElement != nil) {
-                    maxValue = [NSNumber numberWithDouble:[maxValueString doubleValue]];
+                    maxValue = @([maxValueString doubleValue]);
                 }
                 break;
             }

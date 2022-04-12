@@ -33,7 +33,7 @@
 		return NO;
 	}
 	
-	return [[[relationship userInfo] objectForKey:@"destinationEntityIDKeyPath"] length] > 0;
+	return [[relationship userInfo][@"destinationEntityIDKeyPath"] length] > 0;
 }
 
 @end
@@ -74,7 +74,7 @@
 	}
 	
 	// Initially, sort relationships in alphabetical order.
-	relationships = [relationships sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]]];
+	relationships = [relationships sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]]];
 	
 	// Sort relationships in topological order by their destination entities including "IDKeyPath" relationships in dependencies.
 	// Although this is a bit naive O(n^2) sort, it should be fast enough since n (=number of relationships) is usually very low.

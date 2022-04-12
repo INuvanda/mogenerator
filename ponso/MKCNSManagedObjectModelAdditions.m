@@ -47,7 +47,7 @@
 	for (NSEntityDescription *entity in [self entities])
 	{
 		MKCDAGNode *node = [[[MKCDAGNode alloc] initWithObject:entity] autorelease];
-		[entityNodes setObject:node forKey:[entity name]];
+		entityNodes[[entity name]] = node;
 	}
 	
 	// Create DAG from entities based on their relationships
@@ -55,7 +55,7 @@
 	
 	for (NSEntityDescription *entity in [self entities])
 	{
-		MKCDAGNode *node = [entityNodes objectForKey:[entity name]];
+		MKCDAGNode *node = entityNodes[[entity name]];
 		
 		if(![root addNode:node])
 		{
@@ -74,7 +74,7 @@
 			
 			if(shouldInclude)
 			{
-				MKCDAGNode *childNode = [entityNodes objectForKey:[[relationship destinationEntity] name]];
+				MKCDAGNode *childNode = entityNodes[[[relationship destinationEntity] name]];
 				
 				if(![node addNode:childNode])
 				{

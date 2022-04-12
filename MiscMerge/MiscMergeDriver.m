@@ -181,7 +181,7 @@
 
     for (_mergeLoopIndex=0; _mergeLoopIndex<[dataArray count]; _mergeLoopIndex++)
     {
-        id       inputObject = [dataArray objectAtIndex:_mergeLoopIndex];
+        id       inputObject = dataArray[_mergeLoopIndex];
         NSString *outString  = [engine executeWithObject:inputObject sender:self];
 
         while (_mergeLoopIndex > [output count] /*&& _mergeLoopIndex < [dataArray count] hmm */) {
@@ -215,7 +215,7 @@
     _mergeLoopIndex++;
 
     if (_mergeLoopIndex < [dataArray count])
-        nextObject = [dataArray objectAtIndex:_mergeLoopIndex];
+        nextObject = dataArray[_mergeLoopIndex];
     [engine setMainObject:nextObject];
     return nextObject;
 }
@@ -228,7 +228,7 @@
 {
     if (!merging) return nil;
     if (_mergeLoopIndex >= [dataArray count]) return nil;
-    return [dataArray objectAtIndex:_mergeLoopIndex];
+    return dataArray[_mergeLoopIndex];
 }
 
 @end

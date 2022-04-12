@@ -27,8 +27,8 @@ static NSNumber *FALSE_VALUE;
 + (void)initialize
 {
     if ( TRUE_VALUE == nil ) {
-        TRUE_VALUE = [[NSNumber numberWithBool:YES] retain];
-        FALSE_VALUE = [[NSNumber numberWithBool:NO] retain];
+        TRUE_VALUE = [@YES retain];
+        FALSE_VALUE = [@NO retain];
     }
 }
 
@@ -126,7 +126,7 @@ static NSNumber *FALSE_VALUE;
 
 - (id)evaluateWithEngine:(MiscMergeEngine *)anEngine
 {
-    return [NSNumber numberWithDouble:-MMDoubleValueForObject([expression evaluateWithEngine:anEngine])];
+    return @(-MMDoubleValueForObject([expression evaluateWithEngine:anEngine]));
 }
 
 - (NSString *)nameDescription
@@ -140,7 +140,7 @@ static NSNumber *FALSE_VALUE;
 
 - (id)evaluateWithEngine:(MiscMergeEngine *)anEngine
 {
-    return [NSNumber numberWithBool:!MMDoubleValueForObject([expression evaluateWithEngine:anEngine])];
+    return @(!MMDoubleValueForObject([expression evaluateWithEngine:anEngine]));
 }
 
 - (NSString *)nameDescription
@@ -205,17 +205,17 @@ static NSNumber *FALSE_VALUE;
 
     switch ( operator ) {
         case MiscMergeOperatorAdd:
-            return [NSNumber numberWithDouble:(lValue + rValue)];
+            return @(lValue + rValue);
         case MiscMergeOperatorSubtract:
-            return [NSNumber numberWithDouble:(lValue - rValue)];
+            return @(lValue - rValue);
         case MiscMergeOperatorMultiply:
-            return [NSNumber numberWithDouble:(lValue * rValue)];
+            return @(lValue * rValue);
         case MiscMergeOperatorDivide:
-            return [NSNumber numberWithDouble:(lValue / rValue)];
+            return @(lValue / rValue);
         case MiscMergeOperatorModulus:
-            return [NSNumber numberWithInt:((int)lValue % (int)rValue)];
+            return @((int) lValue % (int) rValue);
         default:
-            return [NSNumber numberWithInt:0];
+            return @0;
     }
 }
 
@@ -448,7 +448,7 @@ static NSNumber *FALSE_VALUE;
         if ( index > 0 )
             [string appendString:@","];
 
-        [string appendFormat:@"%lu=%@", (unsigned long)index, [expressions objectAtIndex:index]];
+        [string appendFormat:@"%lu=%@", (unsigned long) index, expressions[index]];
     }
 
     [string appendString:@")"];
