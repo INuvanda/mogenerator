@@ -47,7 +47,7 @@
 
 - (MiscMergeCommandExitType)executeForMerge:(MiscMergeEngine *)aMerger
 {
-    NSCalendarDate *currentDate = (NSCalendarDate *)[NSCalendarDate date];
+    NSCalendarDate *currentDate = [NSCalendarDate date];
     [aMerger appendToOutput:[currentDate descriptionWithCalendarFormat:dateFormat]];
     return MiscMergeCommandExitNormal;
 }

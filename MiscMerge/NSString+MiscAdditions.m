@@ -462,7 +462,7 @@ static NSRange _nextSearchRange(NSString *string, unsigned mask,
 
 - (unsigned)numOfCharactersFromSet:(NSCharacterSet *)aSet
 {
-    return [self numOfCharactersFromSet:(NSCharacterSet *)aSet range:[self completeRange]];
+    return [self numOfCharactersFromSet:aSet range:[self completeRange]];
 }
 
 - (unsigned)numOfCharactersFromSet:(NSCharacterSet *)aSet range:(NSRange)range
