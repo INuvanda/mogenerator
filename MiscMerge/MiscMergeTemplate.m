@@ -113,7 +113,10 @@
 {
     [super init];
     topLevelCommands = [[MiscMergeCommandBlock alloc] init];
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "NotReleasedValue"
     commandStack = [[@[topLevelCommands] mutableCopy] retain];
+#pragma clang diagnostic pop
     startDelimiter = [[[self class] defaultStartDelimiter] retain];
     endDelimiter = [[[self class] defaultEndDelimiter] retain];
     return self;
