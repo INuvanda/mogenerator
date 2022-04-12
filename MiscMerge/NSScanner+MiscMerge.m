@@ -84,8 +84,8 @@
 
 - (BOOL)scanCharacter:(unichar)targetCharacter
 {
-    NSUInteger scanLocation = [self scanLocation];
-    NSString *myString = [self string];
+    NSUInteger scanLocation;
+    NSString *myString;
 
     [self skipPastSkipCharacters];
     scanLocation = [self scanLocation];

@@ -883,7 +883,7 @@ NSString *ApplicationSupportSubdirectoryName = @"mogenerator";
 }
 
 - (NSString*)xcodeSelectPrintPath {
-    NSString *result = @"";
+    NSString *result;
 
     @try {
         NSTask *task = [[[NSTask alloc] init] autorelease];

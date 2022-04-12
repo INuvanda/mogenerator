@@ -62,7 +62,7 @@ DDCliApplication * DDCliApp = nil;
 - (int) runWithClass: (Class) delegateClass;
 {
     NSObject<DDCliApplicationDelegate> * delegate = nil;
-    int result = EXIT_SUCCESS;
+    int result;
     @try
     {
         delegate = [[delegateClass alloc] init];
@@ -94,7 +94,6 @@ DDCliApplication * DDCliApp = nil;
         if (delegate != nil)
         {
             [delegate release];
-            delegate = nil;
         }
     }
     
