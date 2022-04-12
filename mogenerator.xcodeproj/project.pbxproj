@@ -536,6 +536,7 @@
 				GCC_PREFIX_HEADER = mogenerator_Prefix.pch;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				MACOSX_DEPLOYMENT_TARGET = 11.5;
 				OTHER_LDFLAGS = (
 					"-sectcreate",
 					__TEXT,
@@ -560,6 +561,7 @@
 				GCC_PREFIX_HEADER = mogenerator_Prefix.pch;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				MACOSX_DEPLOYMENT_TARGET = 11.5;
 				OTHER_LDFLAGS = (
 					"-sectcreate",
 					__TEXT,
