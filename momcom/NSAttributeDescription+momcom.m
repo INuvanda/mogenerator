@@ -54,14 +54,20 @@ const NSString *const kAttributeValueClassName = @"attributeValueClassName";
     
     NSXMLNode *customClassNameElement = [xmlNode attributeForName:@"customClassName"];
     if (customClassNameElement != nil) {
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "NotReleasedValue"
         NSMutableDictionary *userInfo = [[attributeDescription userInfo] mutableCopy];
+#pragma clang diagnostic pop
         userInfo[kAttributeValueClassName] = [customClassNameElement stringValue];
         [attributeDescription setUserInfo:userInfo.copy];
     }
 
     NSXMLNode *userScalarElement = [xmlNode attributeForName:@"usesScalarValueType"];
     if (userScalarElement != nil) {
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "NotReleasedValue"
         NSMutableDictionary *userInfo = [[attributeDescription userInfo] mutableCopy];
+#pragma clang diagnostic pop
         userInfo[kUsesScalarAttributeType] = [userScalarElement stringValue];
         [attributeDescription setUserInfo:userInfo.copy];
     }

@@ -521,7 +521,10 @@
 - (MiscMergeExpression *)_getAndExpressionFromScanner:(NSScanner *)aScanner
 {
     MiscMergeExpression *expression = [self _getEqualExpressionFromScanner:aScanner];
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "NotReleasedValue"
     NSMutableArray *array = [@[expression] mutableCopy];
+#pragma clang diagnostic pop
 
     while ( 1 ) {
         if ( [self eatKeyWord:@"&&" fromScanner:aScanner isOptional:YES] ||
@@ -544,7 +547,10 @@
 - (MiscMergeExpression *)_getOrExpressionFromScanner:(NSScanner *)aScanner
 {
     MiscMergeExpression *expression = [self _getAndExpressionFromScanner:aScanner];
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "NotReleasedValue"
     NSMutableArray *array = [@[expression] mutableCopy];
+#pragma clang diagnostic pop
 
     while ( 1 ) {
         if ( [self eatKeyWord:@"||" fromScanner:aScanner isOptional:YES] ||
@@ -567,7 +573,10 @@
 - (MiscMergeExpression *)getExpressionFromScanner:(NSScanner *)aScanner
 {
     MiscMergeExpression *expression = [self _getOrExpressionFromScanner:aScanner];
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "NotReleasedValue"
     NSMutableArray *array = [@[expression] mutableCopy];
+#pragma clang diagnostic pop
     
     while ( 1 ) {
         if ( [self eatKeyWord:@"," fromScanner:aScanner isOptional:YES] ) {

@@ -18,7 +18,10 @@
         NSString *targetEntityName = [[fetchRequestXMLNode attributeForName:@"entity"] stringValue];
         if (targetEntityName != nil) {
             NSEntityDescription *targetEntity = [model entitiesByName][targetEntityName];
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "NotReleasedValue"
             fetchRequest = [[NSFetchRequest alloc] init];
+#pragma clang diagnostic pop
             [fetchRequest setEntity:targetEntity];
         }
         NSString *predicateString = [[fetchRequestXMLNode attributeForName:@"predicateString"] stringValue];

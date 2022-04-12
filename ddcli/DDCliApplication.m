@@ -46,7 +46,10 @@ DDCliApplication * DDCliApp = nil;
         return nil;
     
     NSProcessInfo * processInfo = [NSProcessInfo processInfo];
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "OCNotReleasedIvarInspection"
     mName = [[processInfo processName] retain];
+#pragma clang diagnostic pop
     
     return self;
 }

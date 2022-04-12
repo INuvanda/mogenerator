@@ -16,7 +16,10 @@
 
 + (NSEntityDescription *)baseEntityForXML:(NSXMLElement *)xmlNode
 {
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "NotReleasedValue"
     NSEntityDescription *entityDescription = [[NSEntityDescription alloc] init];
+#pragma clang diagnostic pop
     
     BOOL syncable = NO;
     NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
@@ -164,7 +167,10 @@
 
 - (void)_setParentEntity:(NSEntityDescription *)parentEntity
 {
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "NotReleasedValue"
     NSMutableArray *parentSubentities = [[parentEntity subentities] mutableCopy];
+#pragma clang diagnostic pop
     if (parentSubentities == nil) {
         parentSubentities = [NSMutableArray array];
     }

@@ -18,7 +18,10 @@
         return nil;
     }
 
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "NotReleasedValue"
     NSPropertyDescription *propertyDescription = [[self alloc] init];
+#pragma clang diagnostic pop
     BOOL optional = NO;
     BOOL transient = NO;
     BOOL indexed = NO;

@@ -31,7 +31,10 @@
 {
     [self eatKeyWord:@"index" fromScanner:aScanner isOptional:NO];
     arrayField = [[self getArgumentStringFromScanner:aScanner toEnd:NO quotes:&arrayQuote] retain];
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "OCNotReleasedIvarInspection"
     theIndex = [[self getPrimaryExpressionFromScanner:aScanner] retain];
+#pragma clang diagnostic pop
     return YES;
 }
 

@@ -19,7 +19,10 @@
     if (sourceModelDocument != nil) {
         NSXMLElement *rootElement = [sourceModelDocument rootElement];
         if ([[rootElement name] isEqualToString:@"model"]) {
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "NotReleasedValue"
             model = [[NSManagedObjectModel alloc] init];
+#pragma clang diagnostic pop
             NSMutableDictionary *compiledEntities = [NSMutableDictionary dictionary];
             
             NSArray *entityElements = [rootElement nodesForXPath:@"entity" error:error];
@@ -90,7 +93,10 @@
     NSString *modelContentsFilePath = [xcdatamodelPath stringByAppendingPathComponent:@"contents"];
     
     if ([[NSFileManager defaultManager] fileExistsAtPath:modelContentsFilePath]) {
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "NotReleasedValue"
         NSXMLDocument *sourceModelDocument = [[NSXMLDocument alloc] initWithContentsOfURL:[NSURL fileURLWithPath:modelContentsFilePath] options:0 error:error];
+#pragma clang diagnostic pop
         if (sourceModelDocument == nil) {
             return nil;
         }
@@ -163,7 +169,10 @@
                 versionHashes[modelName] = currentVersionHashes;
                 
                 NSString *compiledModelPath = modelPathsByName[modelName];
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "NotReleasedValue"
                 NSManagedObjectModel *compiledModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:[NSURL fileURLWithPath:compiledModelPath]];
+#pragma clang diagnostic pop
                 for (NSEntityDescription *entityDescription in compiledModel) {
                     NSData *versionHash = [entityDescription versionHash];
                     currentVersionHashes[[entityDescription name]] = versionHash;
