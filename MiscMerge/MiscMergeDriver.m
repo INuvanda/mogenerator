@@ -32,7 +32,7 @@
  * MiscMergeDriver implements the required loop to generate the required
  * merges, as well as supporting a protocol that allows the merge engine
  * some control over the loop.  If you create your own loop, instead of
- * using a MiscMergeDriver instance, some of the merge commands such as
+ * using a MiscMergeDriver instance, some merge commands such as
  * "next" will be ignored rather than performing the desired function.
  * 
  * To use a MiscMergeDriver you must provide it with a template, objects to
@@ -63,7 +63,7 @@
  * For more information, please see the IntroMiscMerge.rtfd document. It
  * describes the syntax of the merge language and built-in commands
  * available.  The MiscMergeArchitecture.rtfd document describes the
- * architecutre of the various classes used to perform merging operations
+ * architecture of the various classes used to perform merging operations
  * and how to add custom commands to the framework.
 "*/
 

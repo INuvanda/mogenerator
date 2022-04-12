@@ -51,8 +51,7 @@
  * The rest of the methods are an API to the internal state of the engine
  * which may be used in MiscMergeCommand subclass implementations.
  * 
- * To implement MiscMergeCommands, it is important to understand some of
- * the internals of the MiscMergeEngine class.
+ * To implement MiscMergeCommands, it is important to understand some internals of the MiscMergeEngine class.
  * 
  * The main thing to know is that there is an "output" string that is kept
  * throughout the merge and returned at the end.  MiscMergeCommands should
@@ -225,7 +224,7 @@ static NSMutableDictionary *globalSymbols = nil;
  * resolution, if a resolved value is an NSString object and recursive
  * lookups are turned on, then the value is used as a key itself and the
  * symbol lookup is repeated.  This process repeats until a value is not
- * found or it's not an NSString object, at which point the last valid
+ * found, or it's not an NSString object, at which point the last valid
  * value will be returned.  This allows for multiple levels of indirection.
  * Be careful when using this feature, as it can lead to unexpected
  * problems.  For example, if the main object is not a dictionary,

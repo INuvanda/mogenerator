@@ -205,12 +205,12 @@ typedef struct
 
 /**
  * Called if an argument was not supplied for option that is required
- * to have an argument.  If this is not implemented then a defeault
+ * to have an argument.  If this is not implemented then a default
  * error message is printed.  For long options, the option includes
  * the two dashes. For short options, the option is just a single
  * character.
  *
- * @param option The option that had the missiong argument.
+ * @param option The option that had the missing argument.
  */
 - (void) optionIsMissingArgument: (NSString *) option;
 

@@ -105,7 +105,7 @@ Arguments: ()
  *
  * Since KVC is used, you can implement a set<option>: method to
  * customize the behavior when options are parsed.  For example, you
- * could use this to store all occurences of an option in an array.
+ * could use this to store all occurrences of an option in an array.
  * See @link example.m @endlink for a more complex example that uses
  * this technique.
  *

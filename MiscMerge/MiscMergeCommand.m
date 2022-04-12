@@ -41,7 +41,7 @@
  * whatever special task the command is designed to do.
  *
  * The other methods in this object may be used by subclasses to aid in
- * parsing the command string.  They can grab key words, conditional
+ * parsing the command string.  They can grab keywords, conditional
  * operators, an arguments (single word or quoted string).  A special kind
  * of argument, promptable, is also supported.  A promptable argument is
  * expected to have its actual value determined at run time.
@@ -150,7 +150,7 @@
     NSString *quoteCharString = [NSString stringWithFormat:@"%c", quoteCharacter];
 
     [scanner setCharactersToBeSkipped:nil]; //Don't skip spaces inside of quotes
-    [scanner scanCharacter:quoteCharacter]; //scan past open quote if its there
+    [scanner scanCharacter:quoteCharacter]; //scan past open quote if it's there
 
     while (![scanner isAtEnd]) {
         if ([scanner scanUpToCharactersFromSet:stopSet intoString:&workString])
@@ -192,14 +192,14 @@
     return [self _getQuotedArgumentStringFromScanner:scanner toEnd:endFlag quoteCharacter:'\"'];
 }
 
-/*"
+/*
  * Attempts to parse an argument from %{scanner}.  If %{endFlag} is set,
- * then the remaining string of %{scanner} will be assumend to be the
+ * then the remaining string of %{scanner} will be assumed to be the
  * required argument.  Otherwise, if an argument contains whitespace, it
  * should be surrounded by quotation marks (" or '). If the argument is
  * quoted, the size of the quotes (0, 1, 2) will be returned in %{quotes}.
  * The parsed argument will scanned past in %{scanner}.
-"*/
+ */
 - getArgumentStringFromScanner:(NSScanner *)scanner toEnd:(BOOL)endFlag quotes:(int *)quotes
 {
     char nextCharacter = [scanner peekNextCharacter];
@@ -229,13 +229,13 @@
     return nil;
 }
 
-/*"
+/*
  * Attempts to parse an argument from %{scanner}.  If %{endFlag} is set,
- * then the remaining string of %{scanner} will be assumend to be the
+ * then the remaining string of %{scanner} will be assumed to be the
  * required argument.  Otherwise, if an argument contains whitespace, it
  * should be surrounded by quotation marks ("). The parsed argument will
  * scanned past in %{scanner}.
-"*/
+ */
 - getArgumentStringFromScanner:(NSScanner *)scanner toEnd:(BOOL)endFlag
 {
     return [self getArgumentStringFromScanner:scanner toEnd:endFlag quotes:NULL];

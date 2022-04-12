@@ -252,7 +252,7 @@
                 [mTarget setValue:@YES forKey:key];
             else if (argumentOptions == DDGetoptKeyValueArgument)
             {
-                // Split the arguement on the '=' sign
+                // Split the argument on the '=' sign
                 NSArray *pair = [nsoptarg componentsSeparatedByString:@"="];
                 // Build a keypath from the argument and the new key
                 NSString *keypath = [NSString stringWithFormat:@"%@.%@", key, pair[0]];

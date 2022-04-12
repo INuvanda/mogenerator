@@ -85,7 +85,7 @@
  * error messages:
  *
  * @code
- ddfprintf(stderr, "%@: An error occured", DDCliApp);
+ ddfprintf(stderr, "%@: An error occurred", DDCliApp);
  * @endcode
  *
  * @return The application name
@@ -135,7 +135,7 @@ int DDCliAppRunWithClass(Class delegateClass);
 /**
  * @example example.m
  *
- * This is a slighly more complex example application.  Here are a
+ * This is a slightly more complex example application.  Here are a
  * few sample runs of this program:
  *
  * @verbatim

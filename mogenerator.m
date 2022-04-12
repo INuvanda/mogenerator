@@ -911,7 +911,7 @@ NSString *ApplicationSupportSubdirectoryName = @"mogenerator";
 }
 
 - (void)setModel:(NSString*)momOrXCDataModelFilePath {
-    assert(!model); // Currently we only can load one model.
+    assert(!model); // Currently, we only can load one model.
 
     NSFileManager *fm = [NSFileManager defaultManager];
 
@@ -1017,7 +1017,7 @@ NSString *ApplicationSupportSubdirectoryName = @"mogenerator";
             }}
 
             {{
-                system([momcIncantation UTF8String]); // Ignore system() result since momc sadly doesn't return any relevent error codes.
+                system([momcIncantation UTF8String]); // Ignore system() result since momc sadly doesn't return any relevant error codes.
                 momFilePath = tempGeneratedMomFilePath;
             }}
         }
@@ -1241,7 +1241,7 @@ NSString *ApplicationSupportSubdirectoryName = @"mogenerator";
                 [machineHFiles addObject:machineHFileName];
             } else {
                 if (![fm regularFileExistsAtPath:machineHFileName] || ![generatedMachineH isEqualToString:[NSString stringWithContentsOfFile:machineHFileName encoding:NSUTF8StringEncoding error:nil]]) {
-                    //  If the file doesn't exist or is different than what we just generated, write it out.
+                    //  If the file doesn't exist or is different from what we just generated, write it out.
                     [generatedMachineH writeToFile:machineHFileName atomically:NO encoding:NSUTF8StringEncoding error:nil];
                     machineDirtied = YES;
                     machineFilesGenerated++;
@@ -1257,7 +1257,7 @@ NSString *ApplicationSupportSubdirectoryName = @"mogenerator";
                     [machineMFiles addObject:machineMFileName];
                 } else {
                     if (![fm regularFileExistsAtPath:machineMFileName] || ![generatedMachineM isEqualToString:[NSString stringWithContentsOfFile:machineMFileName encoding:NSUTF8StringEncoding error:nil]]) {
-                        //  If the file doesn't exist or is different than what we just generated, write it out.
+                        //  If the file doesn't exist or is different from what we just generated, write it out.
                         [generatedMachineM writeToFile:machineMFileName atomically:NO encoding:NSUTF8StringEncoding error:nil];
                         machineDirtied = YES;
                         machineFilesGenerated++;

@@ -41,7 +41,7 @@ typedef enum _OptionType {
     [super dealloc];
 }
 
-/*" This method will parse a option command in a template. Options can affect the template
+/*" This method will parse an option command in a template. Options can affect the template
 processing or the runtime.
 
 option betweenWhitespace keepAll* | keepOne | trim

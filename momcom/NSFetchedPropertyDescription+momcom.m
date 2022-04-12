@@ -17,7 +17,7 @@
     
     // Nothing much happens here because it's impossible to create the fetch request without a reference
     // to the target entity. That happens in NSEntityDescription's post-process phase.
-    // And no, +[NSFetchRequest fetchRequestWithEntityName:] here would not be not a convenient workaround,
+    // And no, +[NSFetchRequest fetchRequestWithEntityName:] here would not be a convenient workaround,
     // it's a good way to get an exception thrown at you.
     
     return fetchedPropertyDescription;

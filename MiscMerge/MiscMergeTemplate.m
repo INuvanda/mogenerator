@@ -42,7 +42,7 @@
  * passed to MiscMergeEngine instances as needed.  That's it!
  *
  * It should be noted that template text which is simply copied from the
- * template into the merged output (i.e. any text outside of a merge
+ * template into the merged output (i.e. any text outside a merge
  * command) is actually turned into a special "copy" command by the parsing
  * algorithm. This allows the merge engine to deal exclusively with
  * MiscMergeCommand subclasses to perform a merge.  This implementation
@@ -51,7 +51,7 @@
  * understand the data structure created by the parsing routines.
  *
  * If a command string contains merge commands inside itself, then a
- * special "delayed command" class will used.  That class will, during a
+ * special "delayed command" class will be used.  That class will, during a
  * merge, create an engine, perform a merge on its text, and then parse
  * itself into the correct type of command.  This allows merges to contain
  * commands that change depending upon the data records.
@@ -72,7 +72,7 @@
 {
     //	return @"(";
     //	return @"«";
-    /* This works better for whatever reason. Due to some unknown pecularities,
+    /* This works better for whatever reason. Due to some unknown peculiarities,
     a constant NSString doesn't work under Windows with Apple's
     implementation. */
     return [NSString stringWithCString:"«" encoding:NSUTF8StringEncoding];
@@ -356,7 +356,7 @@
  * found. (If it wasn't found, then the default "field" command class would
  * be returned.)  This allows a programmer to override any built in
  * command. To override the "if" command, simply create a "MergeIfCommand"
- * class and it will be found before the built in class.  If a programmer
+ * class, and it will be found before the built-in class.  If a programmer
  * wishes to make a particular command, such as "omit", inoperative, this
  * technique may be used to override with a MiscMergeCommand subclass that
  * does nothing.
@@ -420,7 +420,7 @@
     would result in no data written to the output, then we don't do anything here. */
     if ( [copyString length] > 0 ) {
         id command = [[[self _classForCommand:@"Copy"] alloc] init];
-        /* Pass the trimmed string, or the passed in string depending if we are trimming strings */
+        /* Pass the trimmed string, or the passed in string depending on if we are trimming strings */
         [command parseFromRawString:copyString];
         [self _addCommand:command];
         [command release];
